@@ -3,6 +3,18 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# --- Git Submodule Check ---
+if [ ! -f "vcpkg/README.md" ]; then
+    echo "--- vcpkg not found. Initializing submodules... ---"
+    git submodule update --init --recursive
+fi
+
+# --- vcpkg Bootstrapping Check ---
+if [ ! -f "./vcpkg/vcpkg" ]; then
+    echo "--- Bootstrapping vcpkg ---"
+    ./vcpkg/bootstrap-vcpkg.sh
+fi
+
 # --- Configuration ---
 # Adjust this if your vcpkg folder is in a different location
 VCPKG_PATH="./vcpkg/scripts/buildsystems/vcpkg.cmake"

@@ -1,10 +1,22 @@
-# Ignore the build directory
+# 1. Build Artifacts (The stuff CMake makes)
 build/
+bin/
+lib/
+*.o
+*.a
+*.so
+*.out
+app
 
-# Ignore the heavy vcpkg tool and installed libraries
-vcpkg/
+# 2. Vcpkg (The heavy library stuff)
 vcpkg_installed/
+# We ignore the internals, but NOT the vcpkg folder itself (because it's a submodule)
+vcpkg/buildtrees/
+vcpkg/downloads/
+vcpkg/packages/
+vcpkg/installed/
 
-# Ignore system files
+# 3. System Files (Junk from OS)
 .DS_Store
-*.swp
+Thumbs.db
+.vscode/
