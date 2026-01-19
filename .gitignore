@@ -1,0 +1,10 @@
+# Ignore the build directory
+build/
+
+# Ignore the heavy vcpkg tool and installed libraries
+vcpkg/
+vcpkg_installed/
+
+# Ignore system files
+.DS_Store
+*.swp
