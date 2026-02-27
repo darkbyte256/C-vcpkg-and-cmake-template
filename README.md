@@ -9,7 +9,7 @@ This repository standardizes the "Zero-to-Build" process for C projects. It inte
 ### Key Features
 - **Modern C Workflow:** Configured for C11/C17 standards.
 - **Dependency Management:** Uses `vcpkg.json` for reproducible, version-locked libraries.
-- **Clang Integration:** Defaulted to `clang` for superior diagnostics and static analysis.
+- **GCC Hardening:** Optimized for **GCC** with specific flags for stack protection, position-independent executables (PIE), and RELRO.
 - **Automated Toolchain:** Includes scripts for submodule initialization and environment bootstrapping.
 - **OpenGL Smoke-Test:** Includes a minimal "Hello Triangle" implementation to verify the linker and GPU driver paths are correctly mapped.
 
@@ -27,7 +27,7 @@ This repository standardizes the "Zero-to-Build" process for C projects. It inte
 
 ### Prerequisites
 - **CMake** (3.10+)
-- **Clang** or **GCC**
+- **GCC**
 - **Git**
 - **System Dependencies** (for the OpenGL smoke-test):
   - Ubuntu/Debian: `sudo apt install libx11-dev libxrandr-dev libxcursor-dev libxi-dev libgl1-mesa-dev`
@@ -37,7 +37,10 @@ The included `build.sh` script handles vcpkg bootstrapping and project configura
 
 ```bash
 chmod +x build.sh
-./build.sh
+for debug Sanitizers and Debug symbols
+./build.sh 
+for release Hardening and O2 optimizations
+./build.sh release
 ```
 
 ### Running the Smoke-Test

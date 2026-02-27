@@ -3,6 +3,24 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# Defaults to Debug if no argument is provided
+BUILD_TYPE="Debug"
+if [ "$1" == "release" ]; then
+    BUILD_TYPE="Release"
+fi
+
+echo "--- Building in ${BUILD_TYPE} mode ---"
+if [ "$BUILD_TYPE" == "Debug" ]; then
+    echo "--- (Sanitizers and Debug symbols enabled) ---"
+else
+    echo "--- (Hardening and O2 optimizations enabled) ---"
+fi
+
+if [ -d "$BUILD_DIR" ]; then
+    echo "--- Cleaning old build artifacts ---"
+    rm -rf "$BUILD_DIR"
+fi
+
 # --- Git Submodule Check ---
 if [ ! -f "vcpkg/README.md" ]; then
     echo "--- vcpkg not found. Initializing submodules... ---"
@@ -37,10 +55,11 @@ fi
 cd "$BUILD_DIR"
 
 # 3. Configure the project with CMake
-echo "--- Configuring Project with Clang and vcpkg ---"
+echo "--- Configuring Project with gcc and vcpkg ---"
 cmake .. \
-    -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_TOOLCHAIN_FILE="../$VCPKG_PATH"
+    -DCMAKE_C_COMPILER=gcc \
+    -DCMAKE_TOOLCHAIN_FILE="../$VCPKG_PATH" \
+    -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
 
 # 4. Build the application
 echo "--- Building Application ---"
