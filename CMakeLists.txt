@@ -15,6 +15,19 @@ set(SOURCES
     src/main.c
     src/util.c)
 
+# --- GCC Security & "Unfaulty" Hardening ---
+
+# Release: Max Security + Performance
+set(SEC_FLAGS "-fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIE -pie")
+set(LD_FLAGS "-Wl,-z,relro,-z,now")
+
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2 ${SEC_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${LD_FLAGS}")
+
+# Debug: Bug Catching (Sanitizers)
+# This will catch your manual memory management errors in the XOR AI
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -Og -Wall -Wextra -fsanitize=address -fsanitize=undefined")
+
 # 2. Add your executable
 add_executable(app ${SOURCES})
 
